@@ -34,6 +34,7 @@ typedef struct s_table
     pthread_mutex_t fork;
     pthread_mutex_t write;
     pthread_mutex_t control;
+    pthread_mutex_t messg;
     pthread_t  controller;
     int     actual;
 }			t_table;

@@ -41,6 +41,7 @@ int ft_parse(int argc, char **args)
     pthread_mutex_init (&table->fork, NULL);
     pthread_mutex_init (&table->write, NULL);
     pthread_mutex_init (&table->control, NULL);
+    pthread_mutex_init (&table->messg, NULL);
      table->init_time = ft_gettime_mill();
     if (argc == 6)
         table->meals = ft_atoi_int(args[5]);
