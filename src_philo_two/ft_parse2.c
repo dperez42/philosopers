@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers2.h"
 
 //init semaphores
 int		init_sem(void)
@@ -22,13 +22,10 @@ void init_phylos(void)
     int i;
 
     table->philos = malloc (sizeof(t_philos)*(table->nb_of_philosophers + 1));
-    table->forks = malloc (sizeof(pthread_mutex_t)*(table->nb_of_philosophers + 1));
     i = 1;
     while (i <= table->nb_of_philosophers)
     {
         table->actual = i;
-        table->philos[i].state = 0;
-        table->philos[i].die = 0;
         table->philos[i].id = i;
         table->philos[i].total_eats = 0;
         table->philos[i].last_meal = ft_gettime();

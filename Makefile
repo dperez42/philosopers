@@ -22,12 +22,12 @@ SRCS_ONE 		=  	main.c \
 					ft_time.c \
 					ft_parse.c \
 					ft_msg.c
-SRCS_TWO	=  	main.c \
-					ft_aux.c \
-					ft_error.c \
-					ft_time.c \
-					ft_parse.c \
-					ft_msg.c
+SRCS_TWO	=  	main2.c \
+					ft_aux2.c \
+					ft_error2.c \
+					ft_time2.c \
+					ft_parse2.c \
+					ft_msg2.c
 SRCS_ONE2		=	$(addprefix $(SRCS_DIR_ONE), $(SRCS_ONE)) 
 SRCS_TWO2		=	$(addprefix $(SRCS_DIR_TWO), $(SRCS_TWO)) 
 
@@ -43,11 +43,12 @@ PURPLE = \033[0;35m
 YELLOW = \033[0;33m
 
 # OBJS =====================================================================================
-OBJS_DIR 		= 	./
+OBJS_DIR_ONE 		= 	./
+OBJS_DIR_TWO		= 	./
 OBJ_ONE			=	$(SRCS_ONE2:.c=.o)
-OBJS_ONE 		= 	$(addprefix $(OBJS_DIR), $(OBJ_ONE))
+OBJS_ONE 		= 	$(addprefix $(OBJS_DIR_ONE), $(OBJ_ONE))
 OBJ_TWO			=	$(SRCS_TWO2:.c=.o)
-OBJS_TWO		= 	$(addprefix $(OBJS_DIR), $(OBJ_TWO))
+OBJS_TWO		= 	$(addprefix $(OBJS_DIR_TWO), $(OBJ_TWO))
 
 # ==========================================================================================
 
@@ -58,6 +59,7 @@ bonus: $(NAME_ONE)
 
 $(NAME_ONE): 	$(OBJS_ONE)
 				$(CC) $(FLAGS) $(INCLUDES_ONE) -o $(NAME_ONE) $(OBJS_ONE)
+				
 $(NAME_TWO): 	$(OBJS_TWO)
 				$(CC) $(FLAGS) $(INCLUDES_TWO) -o $(NAME_TWO) $(OBJS_TWO)
 clean:

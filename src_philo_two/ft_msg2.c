@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers2.h"
 
 void ft_putnbr(unsigned long int nb)
 {
@@ -20,7 +20,7 @@ void ft_msg(unsigned long long time, int philo, char *str)
 {
     sem_wait(table->write);
     ft_putnbr(time);
-    write(1," ",1);
+    write(1," xxx ",5);
     ft_putnbr(philo);
     write(1, str, ft_strlen(str));
     sem_post(table->write);

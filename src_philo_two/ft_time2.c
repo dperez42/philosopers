@@ -1,4 +1,4 @@
- #include "philosophers.h"
+ #include "philosophers2.h"
 
 unsigned long long ft_gettime_mill()
 {

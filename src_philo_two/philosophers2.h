@@ -1,5 +1,5 @@
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILOSOPHER2_H
+# define PHILOSOPHER2_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -18,10 +18,6 @@ typedef struct s_philos
     pthread_t  philo;
     unsigned long long       last_meal;
     int        total_eats;
-    int        fork_left;
-    int        fork_right;
-    int        die;
-    int        state;
 }			t_philos;
 
 typedef struct s_table

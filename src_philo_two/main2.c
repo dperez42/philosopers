@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers2.h"
 
 //action of taking forks
 void ft_take_fork(int philo)
@@ -8,10 +8,10 @@ void ft_take_fork(int philo)
     sem_wait(table->lock);
 	sem_wait(table->forks);
     time = ft_gettime();
-    ft_msg(time, philo, " has taken a fork\n");
+    ft_msg(time, philo, " has taken cca fork\n");
 	sem_wait(table->forks);
     time = ft_gettime();
-    ft_msg(time, philo, " has taken a fork\n");
+    ft_msg(time, philo, " has takenccc a fork\n");
     sem_post(table->lock);
     return;
 
