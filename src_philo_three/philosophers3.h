@@ -1,5 +1,5 @@
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILOSOPHER3_H
+# define PHILOSOPHER3_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -10,35 +10,35 @@
 # include <semaphore.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <signal.h>
+# include <sys/types.h>
 
 
 typedef struct s_philos
 {
-    int        id;
-    pthread_t  philo;
-    unsigned long long       last_meal;
-    int        total_eats;
-    int        fork_left;
-    int        fork_right;
-    int        die;
-    int        state;
+    int                 id;
+    pid_t               philo;
+    unsigned long long  last_meal;
+    int                 total_eats;
 }			t_philos;
 
 typedef struct s_table
 {
 	int nargc;
-    int nb_of_philosophers; 
-    int time_to_die; //en ms
-    int time_to_eat; //en ms
-    int time_to_sleep; // en ms
-    int meals;
-    unsigned long long init_time;
-    t_philos    *philos;
+    int nb_of_philosophers; //numero de philosophers
+    int time_to_die;        //en ms
+    int time_to_eat;        //en ms
+    int time_to_sleep;      // en ms
+    int meals;              //total meals
+    unsigned long long init_time; //start time
+    int                 id;
+    unsigned long long  last_meal;
+    int                 total_eats;
     sem_t	    *forks;
     sem_t	    *write;
 	sem_t	    *lock;
-    pthread_t       controller;
-    int     actual;
+    pthread_t   controller;     //thread para control de estado philosoper
+    
 }			t_table;
 
 t_table *table;
@@ -55,7 +55,7 @@ int ft_strlen(char *str);
 int ft_parse(int argc, char **args);
 void init_phylos(void);
 void *ft_control(void *arg);
-void *ft_routine(void *arg);
+int ft_routine(void);
 void ft_take_fork(int philo);
 
 # endif

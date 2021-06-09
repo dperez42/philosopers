@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers3.h"
 
 //init semaphores
 int		init_sem(void)
@@ -16,29 +16,6 @@ int		init_sem(void)
     return (1);
 }
 
-//init variables
-void init_phylos(void)
-{
-    int i;
-
-    table->philos = malloc (sizeof(t_philos)*(table->nb_of_philosophers + 1));
-    table->forks = malloc (sizeof(pthread_mutex_t)*(table->nb_of_philosophers + 1));
-    i = 1;
-    while (i <= table->nb_of_philosophers)
-    {
-        table->actual = i;
-        table->philos[i].state = 0;
-        table->philos[i].die = 0;
-        table->philos[i].id = i;
-        table->philos[i].total_eats = 0;
-        table->philos[i].last_meal = ft_gettime();
-        pthread_create (&table->philos[i].philo , NULL , ft_routine,  (void *)&table->philos[i].id );
-        i++;
-    }
-    init_sem();
-    return;
-}
-
 //parsing and init variables
 int ft_parse(int argc, char **args)
 {
@@ -52,7 +29,8 @@ int ft_parse(int argc, char **args)
      table->init_time = ft_gettime_mill();
     if (argc == 6)
         table->meals = ft_atoi_int(args[5]);
-    init_phylos();
-    pthread_create (&table->controller, NULL , ft_control,  (void *)&table->nargc );
+    init_sem();
+    table->total_eats = 0;
+    table->last_meal = ft_gettime();
     return (1);
 }
