@@ -30,11 +30,6 @@ FUNCTIONS
 
 memset, printf, malloc, free, write,usleep, gettimeofday, pthread_create, pthread_detach, pthread_join, pthread_mutex_init,pthread_mutex_destroy, pthread_mutex_lock, pthread_mutex_unlock
 
-
-WhileTrueThenDream. fork(). Parte I: ,Creación de un nuevo proceso, hijos, padres, zombies y huérfanos https://www.youtube.com/watch?v=VwjP-KFuZCM
-WhileTrueThenDream. fork(). Parte II. wait, fork , exit status, múltiples hijos https://www.youtube.com/watch?v=Dt9z_ohQWHI
-
-
 RULES
 
 • One fork between each philosopher, therefore there will be a fork at the right and at the left of each philosopher.
@@ -74,3 +69,8 @@ RULES
 • They have no states in memory but the number of available forks is represented by a semaphore.
 
 • Each philosopher should be a process and the main process should not be a philoso- pher.
+
+
+WhileTrueThenDream. fork(). Parte I: ,Creación de un nuevo proceso, hijos, padres, zombies y huérfanos https://www.youtube.com/watch?v=VwjP-KFuZCM
+WhileTrueThenDream. fork(). Parte II. wait, fork , exit status, múltiples hijos https://www.youtube.com/watch?v=Dt9z_ohQWHI
+Use ommand "ps lf" (show process herarchy)
