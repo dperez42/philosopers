@@ -70,7 +70,10 @@ RULES
 
 • Each philosopher should be a process and the main process should not be a philoso- pher.
 
+## RESOURCES
 
 WhileTrueThenDream. fork(). Parte I: ,Creación de un nuevo proceso, hijos, padres, zombies y huérfanos https://www.youtube.com/watch?v=VwjP-KFuZCM
+
 WhileTrueThenDream. fork(). Parte II. wait, fork , exit status, múltiples hijos https://www.youtube.com/watch?v=Dt9z_ohQWHI
+
 Use ommand "ps lf" (show process herarchy)
