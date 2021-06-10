@@ -9,22 +9,7 @@ int	ft_exit_error(void)
 
 int ft_exit_ok(void)
 {
-	int i;
-	i = 1;
-
-	while(i <= table->nb_of_philosophers)
-	{
-		i++;
-	}
-		i = 1;
-	while(i <= table->nb_of_philosophers)
-	{
-		//kill(retVal, SIGKILL);
-		//kill(table->philos[i], SIGKILL);
-		i++;
-	}
-	//free(table->philos);
 	free(table);
-	//system(" leaks philo_one");
+	system(" leaks philo_one");
 	exit(EXIT_SUCCESS);
 }

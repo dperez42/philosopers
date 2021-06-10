@@ -1,5 +1,6 @@
- #include "philosophers3.h"
+#include "philosophers3.h"
 
+//Get actual time
 unsigned long long ft_gettime_mill()
 {
 	static struct timeval	tv;
@@ -8,8 +9,8 @@ unsigned long long ft_gettime_mill()
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
+//Get time from start
 unsigned long long ft_gettime()
 {
-    //printf("ac %llu \nin %llu \n", ft_gettime_mill(), table->init_time);
     return (ft_gettime_mill() - table->init_time);
 }

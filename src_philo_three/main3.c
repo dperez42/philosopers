@@ -13,22 +13,21 @@ void ft_take_fork(int philo)
     time = ft_gettime();
     ft_msg(time, philo, " has taken a fork\n");
     sem_post(table->lock);
-    return;
+    return ;
 }
 
+//release forks
 void ft_release_fork(int philo)
 {
     unsigned long long time;
 
-    //sem_wait(table->lock);
     time = ft_gettime();
     ft_msg(time, philo, " has release a fork\n");
     time = ft_gettime();
     ft_msg(time, philo, " has release a fork\n");
     sem_post(table->forks);
     sem_post(table->forks);
-    //sem_post(table->lock);
-    return;
+    return ;
 }
 
 //life of a philosopher
@@ -58,8 +57,7 @@ int ft_routine(void)
         time = ft_gettime();
         ft_msg(time, philo, " is thinking\n");
     }
-  
-    return (2);
+    return (0);
 }
 
 //check if die or full meals
@@ -103,19 +101,17 @@ int ft_check_states(int *states)
 int main(int argc, char **args)
 {
     pid_t philo;
-    int *pids;
+    int wstatus;
 
     table = malloc (sizeof(t_table));
     if (!ft_parse(argc, args))
-        return(0);;
-    pids = malloc(sizeof(int)*(table->nb_of_philosophers+1));
+        return(0);
     int i;
     i = 1;
     while (i <= table->nb_of_philosophers)
     {
         philo = fork();
-        printf(" philo number %d \n", philo); //no funciona
-        pids[i] = philo;
+        //printf(" philo number %d \n", philo); //no funciona
         if (philo == 0)           //inicia los procesos
 		{	
             table->id = i;
@@ -128,44 +124,25 @@ int main(int argc, char **args)
         }
         else if (philo > 0)
         {
+           
             printf(" "); //do nothing para seguir creando procesos
             //exit(0);
         }
         i++;
     }
-
-    while(1){}
-
-
-
-   // while (1){}
-    /*
-    //while (1)
-    //{
-        i = 1;
-        while (i <= table->nb_of_philosophers)
-        {  
-            if (table->philos[i] != 0)
-            {
-                wtr[i] = waitpid(table->philos[i], &wstatus, WUNTRACED | WCONTINUED);
-                if (WIFEXITED(wstatus)) {
-                    printf(" %i exited, status=%d\n", i, WEXITSTATUS(wstatus));
-                    states[i] = WEXITSTATUS(wstatus);
-                    //if (states[i] == 2)
-                    //    exit(0);
-                    exit (0);
-                } 
-            }
-        i++;
-        }
-        //printf("aqui %i\n", ft_check_states(states));
-        //if (ft_check_states(states)){
-            //printf("aqui\n");
-            //exit(0);
-        //}
-        //printf(" proceso %i\n", table->philos[0]);
-    //}
-   */
-   //exit (0);
+    i = 1;
+    while (i <= table->nb_of_philosophers)
+    {
+        waitpid(philo, &wstatus, WUNTRACED | WCONTINUED);
+        if (WIFEXITED(wstatus)) {
+                printf(" %i exited, status=%d\n", i, WEXITSTATUS(wstatus));
+                if (WEXITSTATUS(wstatus)==3)
+                    exit(0);
+    }
+    i++;
+    }
+    printf("everyone has eaten enought\n");
+    //system(" leaks philo_three");
+    exit(0);
     return (0);
 }
