@@ -49,7 +49,7 @@ int ft_routine(void)
         if (table->total_eats == table->meals)
         {
             ft_msg(table->total_eats, philo, " is full of meals\n");
-            return(2);
+            return(FULL);
         }
         time = ft_gettime();
         ft_msg(time, philo, " is sleeping\n");
@@ -68,11 +68,15 @@ void *ft_control(void *arg)
     while(1)
     {
         //printf("Hh");    
+        if (getppid() != table->pid_table){
+            printf("the father stops\n");
+                exit(0);
+        }
         time = ft_gettime();
         if ((time - table->last_meal) > table->time_to_die)
         {
             ft_msg(time, table->id, " has died\n");
-            exit(3);
+            exit(DIED);
         }
     }
     return NULL;
@@ -101,9 +105,13 @@ int ft_check_states(int *states)
 int main(int argc, char **args)
 {
     pid_t philo;
+    pid_t pid_table;
     int wstatus;
 
+   
+    printf(" pid del padre %i \n", pid_table);
     table = malloc (sizeof(t_table));
+    table->pid_table = getpid();
     if (!ft_parse(argc, args))
         return(0);
     int i;
@@ -120,12 +128,12 @@ int main(int argc, char **args)
         }
         else if (philo == -1)
         {
-            //error//
+           //s printf(" pid del padre  en el hijo %i \n", philo);
         }
         else if (philo > 0)
         {
-           
-            printf(" "); //do nothing para seguir creando procesos
+            //printf(" pid del padre  en el hijo %i \n", philo);
+            //printf(" "); //do nothing para seguir creando procesos
             //exit(0);
         }
         i++;
@@ -135,9 +143,13 @@ int main(int argc, char **args)
     {
         waitpid(philo, &wstatus, WUNTRACED | WCONTINUED);
         if (WIFEXITED(wstatus)) {
-                printf(" %i exited, status=%d\n", i, WEXITSTATUS(wstatus));
-                if (WEXITSTATUS(wstatus)==3)
+                ft_msg(ft_gettime(), WEXITSTATUS(wstatus), " exit status\n");
+                //printf(" %i exited, status=%d\n", i, WEXITSTATUS(wstatus));
+                if (WEXITSTATUS(wstatus) == DIED)
+                {
+                    usleep(5 * 1000);
                     exit(0);
+                }
     }
     i++;
     }

@@ -13,7 +13,8 @@
 # include <signal.h>
 # include <sys/types.h>
 
-
+# define  DIED  3
+# define  FULL  2
 typedef struct s_philos
 {
     int                 id;
@@ -30,6 +31,7 @@ typedef struct s_table
     int time_to_eat;        //en ms
     int time_to_sleep;      // en ms
     int meals;              //total meals
+    pid_t               pid_table;
     unsigned long long init_time; //start time
     int                 id;
     unsigned long long  last_meal;
