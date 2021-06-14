@@ -10,6 +10,5 @@ unsigned long long ft_gettime_mill()
 
 unsigned long long ft_gettime()
 {
-    //printf("ac %llu \nin %llu \n", ft_gettime_mill(), table->init_time);
     return (ft_gettime_mill() - table->init_time);
 }

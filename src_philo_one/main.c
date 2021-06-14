@@ -49,6 +49,28 @@ void *ft_routine(void *arg)
     return NULL;
 }
 
+void ft_full(unsigned long long time)
+{
+    int j;
+    int flag;
+    
+    j = 1;
+    flag = 0;
+    while (j <= table->nb_of_philosophers)
+    {
+        if (table->philos[j].total_eats < table->meals)
+            flag = 1;
+        j++;
+    }
+    if (!flag)
+    {
+        ft_msg(time, 0, " All philosopers have eaten\n");
+        table->flag = 1;
+        ft_exit_ok();
+    }
+    return ;
+}
+
 //check if die or full meals
 void *ft_control(void *arg)
 {
@@ -56,8 +78,6 @@ void *ft_control(void *arg)
     int nb_args;
     nb_args = *(int*)arg;
     unsigned long long time;
-    int j;
-    int flag;
     
     while(1)
     {
@@ -69,39 +89,16 @@ void *ft_control(void *arg)
             if ((time - table->philos[i].last_meal) > table->time_to_die)
             {
                 ft_msg(time, i, " has died\n");
-                 table->flag = 1;
-                //printf("%llu %i Philosopher died\n", time, i);
-                //printf(" %llu %i\n", (time - table->philos[i].last_meal), table->time_to_die);
+                table->flag = 1;
                 ft_exit_ok();
             }
-            time = ft_gettime();
-            if (nb_args == 6) // && table->philos[i].total_eats >= table->meals)
-            {
-                j = 1;
-                flag = 0;
-                while (j <= table->nb_of_philosophers)
-                {
-                    if (table->philos[j].total_eats < table->meals)
-                        flag = 1;
-                    j++;
-                }
-                if (!flag)
-                {
-                    
-                     ft_msg(time, 0, " All philosopers have eaten\n");
-                    table->flag = 1;
-                    //ft_msg(time, 0, " All philosopers have eaten\n");
-                    //printf("%llu all Philosoper have eaten\n", time);
-                    ft_exit_ok();
-                }
-            }
+            if (nb_args == 6)
+                ft_full(time);
             pthread_mutex_unlock(&table->control);
             i++;
         }
     }
-    
     return NULL;
-
 }
 
 int main(int argc, char **args)

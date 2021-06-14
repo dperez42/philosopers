@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_parse.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/14 20:01:09 by daniel            #+#    #+#             */
+/*   Updated: 2021/06/14 20:01:46 by daniel           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 //init variables
@@ -26,7 +38,7 @@ void init_phylos(void)
         pthread_create (&table->philos[i].philo , NULL , ft_routine,  (void *)&table->philos[i].id );
         i++;
     }
-    return;
+    return ;
 }
 
 //parsing and init variables

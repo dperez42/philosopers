@@ -41,20 +41,18 @@ typedef struct s_table
 }			t_table;
 
 t_table *table;
-
-int	ft_atoi_int(char *str);
-int	ft_exit_error(void);
-int ft_exit_ok(void);
-unsigned long long ft_gettime_mill();
-unsigned long long ft_gettime();
-void    ft_usleep(int length);
-void ft_msg(unsigned long long time, int act, char *str);
-int ft_strlen(char *str);
-
-int ft_parse(int argc, char **args);
-void init_phylos(void);
-void *ft_control(void *arg);
-void *ft_routine(void *arg);
-void ft_take_fork(int philo, int philo_prev);
+int                 ft_atoi_int(char *str);
+int                 ft_exit_error(void);
+int                 ft_exit_ok(void);
+unsigned long long  ft_gettime_mill();
+unsigned long long  ft_gettime();
+void                ft_usleep(int length);
+void                ft_msg(unsigned long long time, int act, char *str);
+int                 ft_strlen(char *str);
+int                 ft_parse(int argc, char **args);
+void                init_phylos(void);
+void                *ft_control(void *arg);
+void                *ft_routine(void *arg);
+void                ft_take_fork(int philo, int philo_prev);
 
 # endif

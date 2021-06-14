@@ -6,7 +6,7 @@
 /*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:28 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 14:03:37 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/14 19:55:51 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void *ft_routine(void *arg)
     philo_prev = philo - 1;
     if (philo_prev < 1)
         philo_prev = table->nb_of_philosophers;
-    while(1){
+    while(1)
+    {
         ft_take_fork(philo);
         time = ft_gettime();
         table->philos[philo].last_meal = time;
@@ -83,13 +84,11 @@ void ft_isfull(unsigned long long time)
 //check if die or full meals
 void *ft_control(void *arg)
 {
-    int i;
-    int nb_args;
-    nb_args = *(int*)arg;
-    unsigned long long time;
-    int j;
-    int flag;
+    int                 i;
+    int                 nb_args;
+    unsigned long long  time;
     
+    nb_args = *(int*)arg;
     while(1)
     {
         i = 1;
@@ -102,27 +101,8 @@ void *ft_control(void *arg)
                 table->state = 1;
                 ft_exit_ok();
             }
-            //time = ft_gettime();
-            if (nb_args == 6) // && table->philos[i].total_eats >= table->meals)
+            if (nb_args == 6)
                ft_isfull(time);
-            /*
-            {
-                j = 1;
-                flag = 0;
-                while (j <= table->nb_of_philosophers)
-                {
-                    if (table->philos[j].total_eats < table->meals)
-                        flag = 1;
-                    j++;
-                }
-                if (!flag)
-                {
-                    ft_msg(time, 0, " All philosopers have eaten\n");
-                    table->state = 1;
-                    ft_exit_ok();
-                }
-            }
-            */
             i++;
         }
     }

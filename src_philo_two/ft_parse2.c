@@ -6,14 +6,14 @@
 /*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:24 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 14:03:00 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/14 19:52:32 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers2.h"
 
 //init semaphores
-int		init_sem(void)
+int init_sem(void)
 {
 	sem_unlink("forks");
 	if ((table->forks = sem_open("forks", O_CREAT, S_IRWXU, table->nb_of_philosophers)) ==
@@ -33,7 +33,7 @@ void init_phylos(void)
 {
     int i;
 
-    table->philos = malloc (sizeof(t_philos)*(table->nb_of_philosophers + 1));
+    table->philos = malloc (sizeof(t_philos) * (table->nb_of_philosophers + 1));
     i = 1;
     init_sem();
     while (i <= table->nb_of_philosophers)
@@ -44,8 +44,7 @@ void init_phylos(void)
         pthread_create (&table->philos[i].philo , NULL , ft_routine,  (void *)&table->philos[i].id );
         i++;
     }
-   
-    return;
+    return ;
 }
 
 //parsing and init variables

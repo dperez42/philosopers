@@ -6,12 +6,13 @@
 /*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:15 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 13:58:16 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/14 19:44:32 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers2.h"
 
+//print number
 void ft_putnbr(unsigned long int nb)
 {
     char c;
@@ -28,6 +29,7 @@ void ft_putnbr(unsigned long int nb)
     }
 }
 
+//print message protected by a semaphore
 void ft_msg(unsigned long long time, int philo, char *str)
 {
     sem_wait(table->write);
