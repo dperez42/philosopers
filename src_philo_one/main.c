@@ -69,6 +69,7 @@ void *ft_control(void *arg)
             if ((time - table->philos[i].last_meal) > table->time_to_die)
             {
                 ft_msg(time, i, " has died\n");
+                 table->flag = 1;
                 //printf("%llu %i Philosopher died\n", time, i);
                 //printf(" %llu %i\n", (time - table->philos[i].last_meal), table->time_to_die);
                 ft_exit_ok();
@@ -86,7 +87,10 @@ void *ft_control(void *arg)
                 }
                 if (!flag)
                 {
-                    ft_msg(time, 0, " All philosopers have eaten\n");
+                    
+                     ft_msg(time, 0, " All philosopers have eaten\n");
+                    table->flag = 1;
+                    //ft_msg(time, 0, " All philosopers have eaten\n");
                     //printf("%llu all Philosoper have eaten\n", time);
                     ft_exit_ok();
                 }

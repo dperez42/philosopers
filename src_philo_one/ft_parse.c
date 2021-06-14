@@ -20,6 +20,7 @@ void init_phylos(void)
         table->philos[i].state = 0;
         table->philos[i].die = 0;
         table->philos[i].id = i;
+        table->flag = 0;
         table->philos[i].total_eats = 0;
         table->philos[i].last_meal = ft_gettime();
         pthread_create (&table->philos[i].philo , NULL , ft_routine,  (void *)&table->philos[i].id );

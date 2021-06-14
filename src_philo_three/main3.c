@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main3.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/14 19:10:04 by daniel            #+#    #+#             */
+/*   Updated: 2021/06/14 19:10:05 by daniel           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers3.h"
 
 //action of taking forks
@@ -67,11 +79,6 @@ void *ft_control(void *arg)
 
     while(1)
     {
-        //printf("Hh");    
-        if (getppid() != table->pid_table){
-            printf("the father stops\n");
-                exit(0);
-        }
         time = ft_gettime();
         if ((time - table->last_meal) > table->time_to_die)
         {
@@ -82,79 +89,65 @@ void *ft_control(void *arg)
     return NULL;
 }
 
-int ft_check_states(int *states)
-{
-    int i;
-    i = 1;
-    while (i <= table->nb_of_philosophers)
-    {
-        if (states[i]==3)
-            return(1);
-        i++;
-    }
-    i = 1;
-    while (i <= table->nb_of_philosophers)
-    {
-        if (states[i]!=2)
-            return(0);
-        i++;
-    }
-    return(1);
-}
 
 int main(int argc, char **args)
 {
-    pid_t philo;
-    pid_t pid_table;
-    int wstatus;
+    pid_t   *philo;
+    pid_t   pid_table;
+    int     wstatus;
+    int     i;
 
-   
-    printf(" pid del padre %i \n", pid_table);
     table = malloc (sizeof(t_table));
-    table->pid_table = getpid();
+    if (!table)
+        exit(1);
+    //table->pid_table = getpid();
     if (!ft_parse(argc, args))
         return(0);
-    int i;
+    philo = malloc (sizeof(pid_t) * (table->nb_of_philosophers + 1));
+    if (!philo)
+        exit(1);
     i = 1;
     while (i <= table->nb_of_philosophers)
     {
-        philo = fork();
+        philo[i] = fork();
         //printf(" philo number %d \n", philo); //no funciona
-        if (philo == 0)           //inicia los procesos
+        if (philo[i] == 0)           //inicia los procesos
 		{	
             table->id = i;
             pthread_create (&table->controller , NULL , ft_control,  (void *)&table->id ); //probar si declaranlo antes?
             exit(ft_routine());
         }
-        else if (philo == -1)
+        else if (philo[i] == -1)
         {
            //s printf(" pid del padre  en el hijo %i \n", philo);
         }
-        else if (philo > 0)
+        else if (philo[i] > 0)
         {
-            //printf(" pid del padre  en el hijo %i \n", philo);
+            printf(" pid del padre  en el hijo %i \n", philo[i]);
             //printf(" "); //do nothing para seguir creando procesos
             //exit(0);
         }
         i++;
     }
+    int j;
     i = 1;
     while (i <= table->nb_of_philosophers)
     {
-        waitpid(philo, &wstatus, WUNTRACED | WCONTINUED);
+        waitpid(philo[i], &wstatus, 0); //WUNTRACED | WCONTINUED);
         if (WIFEXITED(wstatus)) {
                 ft_msg(ft_gettime(), WEXITSTATUS(wstatus), " exit status\n");
                 //printf(" %i exited, status=%d\n", i, WEXITSTATUS(wstatus));
                 if (WEXITSTATUS(wstatus) == DIED)
                 {
-                    usleep(5 * 1000);
+                    j = 1;
+                    while (j <= table->nb_of_philosophers)
+                        kill(philo[j++], 1);
                     exit(0);
                 }
     }
     i++;
-    }
-    printf("everyone has eaten enought\n");
-    //system(" leaks philo_three");
+    } 
+    ft_msg(ft_gettime(), 0, " All Philosphers had eaten enought\n");
     exit(0);
     return (0);
 }

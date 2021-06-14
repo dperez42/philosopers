@@ -28,13 +28,13 @@ typedef struct s_table
     int time_to_eat; //en ms
     int time_to_sleep; // en ms
     int meals;
+    int state;
     unsigned long long init_time;
     t_philos    *philos;
     sem_t	    *forks;
     sem_t	    *write;
 	sem_t	    *lock;
     pthread_t       controller;
-    int     actual;
 }			t_table;
 
 t_table *table;

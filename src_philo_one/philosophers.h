@@ -28,6 +28,7 @@ typedef struct s_table
     int time_to_eat; //en ms
     int time_to_sleep; // en ms
     int meals;
+    int flag;
     unsigned long long init_time;
     t_philos *philos;
     pthread_mutex_t *forks;

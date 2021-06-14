@@ -65,9 +65,7 @@ OBJS_THREE		= 	$(addprefix $(OBJS_DIR_THREE), $(OBJ_THREE))
 # ==========================================================================================
 
 # FROM SUBJECT =============================================================================
-all: $(NAME_THREE)
-
-bonus: $(NAME_ONE)
+all: $(NAME_ONE) $(NAME_TWO) $(NAME_THREE)
 
 $(NAME_ONE): 	$(OBJS_ONE)
 				$(CC) $(FLAGS) $(INCLUDES_ONE) -o $(NAME_ONE) $(OBJS_ONE)
@@ -87,6 +85,8 @@ fclean: clean
 	@/bin/rm -rf $(NAME_ONE) $(NAME_TWO) $(NAME_THREE)
 
 re: fclean all
+
+.PHONY: all clean fclean re
 
 # testing ======================================================================================
 
