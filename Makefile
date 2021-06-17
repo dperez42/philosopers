@@ -23,7 +23,8 @@ SRCS_ONE 		=  	main.c \
 					ft_error.c \
 					ft_time.c \
 					ft_parse.c \
-					ft_msg.c
+					ft_msg.c \
+					ft_forks.c
 SRCS_TWO		=  	main2.c \
 					ft_aux2.c \
 					ft_error2.c \
@@ -66,7 +67,7 @@ OBJS_THREE		= 	$(addprefix $(OBJS_DIR_THREE), $(OBJ_THREE))
 # ==========================================================================================
 
 # FROM SUBJECT =============================================================================
-all: $(NAME_THREE)
+all: $(NAME_ONE) $(NAME_TWO) $(NAME_THREE)
 
 $(NAME_ONE): 	$(OBJS_ONE)
 				$(CC) $(FLAGS) $(INCLUDES_ONE) -o $(NAME_ONE) $(OBJS_ONE)
