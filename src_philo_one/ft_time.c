@@ -10,5 +10,5 @@ unsigned long long ft_gettime_mill()
 
 unsigned long long ft_gettime()
 {
-    return (ft_gettime_mill() - table->init_time);
+    return (ft_gettime_mill() - g_table->init_time);
 }

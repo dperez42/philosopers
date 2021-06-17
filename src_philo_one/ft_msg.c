@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 20:00:42 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 20:00:50 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/17 11:12:36 by dperez-z         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void ft_putnbr(unsigned long int nb)
 
 void ft_msg(unsigned long long time, int philo, char *str)
 {
-    pthread_mutex_lock(&table->messg);
-    if (table->flag != 1)
+    pthread_mutex_lock(&g_table->messg);
+    if (g_table->flag != 1)
     {
         ft_putnbr(time);
         write(1," ",1);
         ft_putnbr(philo);
         write(1, str, ft_strlen(str));
     }
-    pthread_mutex_unlock(&table->messg);
+    pthread_mutex_unlock(&g_table->messg);
     return ;
 }

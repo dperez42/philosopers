@@ -37,7 +37,7 @@ typedef struct s_table
     pthread_t       controller;
 }			t_table;
 
-t_table *table;
+t_table *g_table;
 
 int	ft_atoi_int(char *str);
 int	ft_exit_error(void);

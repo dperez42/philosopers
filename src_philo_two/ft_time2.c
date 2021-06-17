@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_time2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:53 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 19:53:04 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/17 11:12:36 by dperez-z         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ unsigned long long ft_gettime_mill()
 //give time from start
 unsigned long long ft_gettime()
 {
-  return (ft_gettime_mill() - table->init_time);
+  return (ft_gettime_mill() - g_table->init_time);
 }

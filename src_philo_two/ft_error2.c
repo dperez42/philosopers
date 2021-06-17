@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:21 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/14 19:50:15 by daniel           ###   ########.fr       */
+/*   Updated: 2021/06/17 11:12:36 by dperez-z         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ int ft_exit_ok(void)
 	int i;
 
 	i = 1;
-	pthread_detach(table->controller);
-	while(i <= table->nb_of_philosophers)
-		pthread_detach(table->philos[i++].philo);
+	pthread_detach(g_table->controller);
+	while(i <= g_table->nb_of_philosophers)
+		pthread_detach(g_table->philos[i++].philo);
 	sem_unlink("forks");
 	sem_unlink("write");
 	sem_unlink("lock");
-	sem_close(table->forks);
-	sem_close(table->write);
-	sem_close(table->lock);
-	free(table->philos);
-	free(table);
+	sem_close(g_table->forks);
+	sem_close(g_table->write);
+	sem_close(g_table->lock);
+	free(g_table->philos);
+	free(g_table);
 	exit(EXIT_SUCCESS);
 }
