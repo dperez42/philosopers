@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:24 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/17 13:28:38 by dperez-z         ###   ########.fr       */
+/*   Updated: 2021/06/18 20:51:29 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ int	init_sem(void)
 	g_table->lock = sem_open("lock", O_CREAT, S_IRWXU, 1);
 	if (g_table->lock == SEM_FAILED)
 		return (0);
+	sem_unlink("time");
+	g_table->lock = sem_open("time", O_CREAT, S_IRWXU, 1);
+	if (g_table->lock == SEM_FAILED)
+		return (0);
+	sem_unlink("control");
+	g_table->lock = sem_open("control", O_CREAT, S_IRWXU, 1);
+	if (g_table->lock == SEM_FAILED)
+		return (0);
 	return (1);
 }
 
@@ -38,8 +46,8 @@ void	init_phylos(void)
 
 	g_table->philos = malloc (sizeof(t_philos)
 			* (g_table->nb_of_philosophers + 1));
-	i = 1;
 	init_sem();
+	i = 1;
 	while (i <= g_table->nb_of_philosophers)
 	{
 		g_table->philos[i].id = i;
@@ -67,7 +75,5 @@ int	ft_parse(int argc, char **args)
 	if (argc == 6)
 		g_table->meals = ft_atoi_int(args[5]);
 	init_phylos();
-	pthread_create(&g_table->controller, NULL, ft_control,
-		(void *)&g_table->nargc);
 	return (1);
 }

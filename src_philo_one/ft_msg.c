@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_msg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 20:00:42 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/17 13:39:40 by dperez-z         ###   ########.fr       */
+/*   Updated: 2021/06/20 22:38:32 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_msg(unsigned long long time, int philo, char *str)
 	if (g_table->flag != 1)
 	{
 		ft_putnbr(time);
-		write(1, " ", 1);
+		write(1, "\t", 1);
 		ft_putnbr(philo);
 		write(1, str, ft_strlen(str));
 	}

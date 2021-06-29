@@ -30,14 +30,16 @@ SRCS_TWO		=  	main2.c \
 					ft_error2.c \
 					ft_time2.c \
 					ft_parse2.c \
-					ft_msg2.c
+					ft_msg2.c \
+					ft_forks.c
 SRCS_THREE		=  	main3.c \
 					ft_aux3.c \
 					ft_error3.c \
 					ft_time3.c \
 					ft_parse3.c \
 					ft_msg3.c \
-					ft_pids.c
+					ft_pids.c \
+					ft_forks.c
 SRCS_ONE2		=	$(addprefix $(SRCS_DIR_ONE), $(SRCS_ONE)) 
 SRCS_TWO2		=	$(addprefix $(SRCS_DIR_TWO), $(SRCS_TWO)) 
 SRCS_THREE2		=	$(addprefix $(SRCS_DIR_THREE), $(SRCS_THREE)) 

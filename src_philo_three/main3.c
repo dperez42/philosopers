@@ -3,96 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   main3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 19:10:04 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/17 12:17:24 by dperez-z         ###   ########.fr       */
+/*   Updated: 2021/06/28 13:43:44 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers3.h"
 
-//action of taking forks
-void	ft_take_fork(int philo)
-{
-	unsigned long long	time;
-
-	sem_wait(g_table->lock);
-	sem_wait(g_table->forks);
-	time = ft_gettime();
-	ft_msg(time, philo, " has taken a fork\n");
-	sem_wait(g_table->forks);
-	time = ft_gettime();
-	ft_msg(time, philo, " has taken a fork\n");
-	sem_post(g_table->lock);
-	return ;
-}
-
-//release forks
-void	ft_release_fork(int philo)
-{
-	sem_post(g_table->forks);
-	sem_post(g_table->forks);
-	return ;
-}
-
 //life of a philosopher
-int	ft_routine(void)
+int	ft_routine(t_table *table)
 {
 	unsigned long long	time;
 	int					philo;
 
-	philo = g_table->id;
+	philo = table->id;
+	table->is_eating = 0;
+	table->last_meal = ft_gettime(table);
+	pthread_create(&table->controller, NULL, &ft_control, (void *)table);
+	pthread_detach(table->controller);
 	while (1)
-	{
-		ft_take_fork(philo);
-		time = ft_gettime();
-		g_table->last_meal = time;
-		ft_msg(time, philo, " is eating\n");
-		usleep(g_table->time_to_eat * 1000);
-		ft_release_fork(philo);
-		g_table->total_eats ++;
-		if (g_table->total_eats == g_table->meals)
-			return (FULL);
-		time = ft_gettime();
-		ft_msg(time, philo, " is sleeping\n");
-		usleep(g_table->time_to_sleep * 1000);
-		time = ft_gettime();
-		ft_msg(time, philo, " is thinking\n");
+	{	
+		ft_take_fork(table);
+		table->is_eating = 1;
+		time = ft_gettime(table);
+		table->last_meal = time;
+		ft_msg(table, time, philo, "\e[32m\tis eating\n\e[0m");
+		usleep (table->time_to_eat * 1000);
+		ft_release_fork(table);
+		time = ft_gettime(table);
+		table->total_eats ++;
+		table->is_eating = 0;
+		if (table->total_eats == table->meals)
+		{	
+			//ft_msg(table, time, philo, "\e[1;34m\tha terminado de comer\n\e[0m");
+			sem_post(table->nb_meal);
+			break;
+		}
+		ft_msg(table, time, philo, "\e[1;34m\tis spleeping\n\e[0m");
+		usleep(table->time_to_sleep*1000);
+		time = ft_gettime(table);
+		ft_msg(table, time, philo, "\e[34m\tis thinking\n\e[0m");		
 	}
-	return (0);
+	ft_exit_child_ok(FULL);
+	return(FULL);
 }
-
 //check if die starving 
 void	*ft_control(void *arg)
 {
-	unsigned long long	time;
+	long long 	aux;
+	t_table		*table;
 
+	table = (t_table *)arg;
+	
 	while (1)
 	{
-		time = ft_gettime();
-		if ((time - g_table->last_meal) > g_table->time_to_die)
+		sem_wait(table->fork );
+		aux = ft_gettime(table) - table->last_meal;
+		if (!table->is_eating && aux > table->time_to_die)
 		{
-			ft_msg(time, g_table->id, " has died\n");
-			g_table->finish = 1;
-			exit(DIED);
+			ft_msg(table, ft_gettime(table), table->id, "\e[31m\thas died\n\e[0m");
+			//sem_wait(table->write);
+			sem_post(table->fork );
+			//sem_wait(table->write);
+			sem_post(table->end);
+			//sem_wait(table->write);
+			ft_exit_child_ok(DIED);
 		}
+		sem_post(table->fork);
+		usleep(1000);
 	}
 	return (NULL);
 }
 
+//check if every philisophers had eaten
+void	*full_meals(void *args)
+{
+	int j;
+	t_table		*table;
+
+	table = (t_table *)args;
+	
+	j = 1;
+	while (j <= table->nb_of_philosophers)
+	{
+		sem_wait(table->nb_meal);
+		j++;
+	}
+	ft_msg(table, ft_gettime_father(table), 0, "\e[0;35m\tLimit of meals reached\n\e[0m");
+	//sem_wait(table->write);
+	sem_post(table->end);
+	//sem_wait(table->write);
+	ft_exit_ok(table, FULL);
+	return (NULL);
+}
+
+//main process
 int	main(int argc, char **args)
 {
-	pid_t	*philo;
+	t_table		*table;
+	pthread_t	thread_meals;
 
-	if (!ft_parse(argc, args))
-		return (0);
-	philo = malloc (sizeof(pid_t) * (g_table->nb_of_philosophers + 1));
-	if (!philo)
+	table = malloc (sizeof(t_table));
+	if (!table)
 		exit(1);
-	philo = ft_create_pid(philo);
-	ft_create_waitpids(philo);
-	ft_msg(ft_gettime(), 0, " All Philosphers had eaten enought\n");
-	exit (0);
+	if (!ft_parse(table, argc, args))
+		return (0);
+	if (argc == 6)
+	{
+		if (pthread_create(&thread_meals, NULL, &full_meals, (void*)table))
+			return (1);
+		pthread_detach(thread_meals);
+	}
+	sem_wait(table->end);
+	ft_exit_ok(table, 0);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 20:00:36 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/17 13:31:04 by dperez-z         ###   ########.fr       */
+/*   Updated: 2021/06/22 23:26:09 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,19 @@ int	ft_exit_ok(void)
 {
 	int	i;
 
+	
 	i = 1;
 	pthread_mutex_destroy(&g_table->fork);
-	pthread_mutex_destroy(&g_table->write);
-	pthread_mutex_destroy(&g_table->control);
+	pthread_mutex_destroy(&g_table->messg);
+	pthread_mutex_destroy(&g_table->time);
+	pthread_detach(g_table->controller);
 	while (i <= g_table->nb_of_philosophers)
 		pthread_mutex_destroy(&g_table->forks[i++]);
 	i = 1;
-	while (i <= g_table->nb_of_philosophers)
-		pthread_detach(g_table->philos[i++].philo);
-	free(g_table->forks);
-	free(g_table->philos);
-	free(g_table);
+	//while (i <= g_table->nb_of_philosophers)
+	//	pthread_detach(g_table->philos[i].philo);
+	//free(g_table->forks);
+	//free(g_table->philos);
+	//free(g_table);
 	exit(EXIT_SUCCESS);
 }

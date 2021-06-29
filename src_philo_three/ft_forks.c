@@ -1,42 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_msg3.c                                          :+:      :+:    :+:   */
+/*   ft_forks.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/14 19:10:24 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/28 13:37:33 by daniel           ###   ########.fr       */
+/*   Created: 2021/06/27 19:39:17 by daniel            #+#    #+#             */
+/*   Updated: 2021/06/28 01:15:18 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers3.h"
 
-void	ft_putnbr(unsigned long int nb)
+//action of taking forks
+void	ft_take_fork(t_table *table)
 {
-	char	c;
-
-	if (nb < 10)
-	{
-		c = nb + '0';
-		write(1, &c, 1);
-	}
-	else
-	{
-		ft_putnbr(nb / 10);
-		ft_putnbr(nb % 10);
-	}
+	sem_wait(table->forks);
+	sem_wait(table->forks);
+	ft_msg(table, ft_gettime(table), table->id, "\e[1;32m\thas taken a fork\n\e[0m");
+	ft_msg(table, ft_gettime(table), table->id, "\e[1;32m\thas taken a fork\n\e[0m");
 	return ;
 }
 
-void	ft_msg(t_table *table, unsigned long long time, int philo, char *str)
+//release forks
+void	ft_release_fork(t_table *table)
 {
-	sem_wait(table->write);
-		ft_putnbr(time);
-		write(1, "\t", 1);
-		if (philo != 0)
-			ft_putnbr(philo);
-		write(1, str, ft_strlen(str));
-	sem_post(table->write);
+	sem_post(table->forks);
+	sem_post(table->forks);
 	return ;
 }

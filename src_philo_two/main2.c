@@ -3,28 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dperez-z <dperez-z@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/14 13:58:28 by daniel            #+#    #+#             */
-/*   Updated: 2021/06/17 12:46:36 by dperez-z         ###   ########.fr       */
+/*   Updated: 2021/06/20 19:31:03 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers2.h"
 
-//action of taking forks
-void	ft_take_fork(int philo)
+//Custom usleep funtion
+void	ft_usleep(unsigned long long time, unsigned long long delay)
 {
-	unsigned long long	time;
-
-	sem_wait(g_table->lock);
-	sem_wait(g_table->forks);
-	time = ft_gettime();
-	ft_msg(time, philo, " has taken a fork\n");
-	sem_wait(g_table->forks);
-	time = ft_gettime();
-	ft_msg(time, philo, " has taken a fork\n");
-	sem_post(g_table->lock);
+	while ((ft_gettime() - time) < delay)
+	{}
 	return ;
 }
 
@@ -33,27 +25,22 @@ void	*ft_routine(void *arg)
 {
 	unsigned long long	time;
 	int					philo;
-	int					philo_prev;
 
 	philo = *(int *)arg;
-	philo_prev = philo - 1;
-	if (philo_prev < 1)
-		philo_prev = g_table->nb_of_philosophers;
 	while (1)
 	{
 		ft_take_fork(philo);
 		time = ft_gettime();
 		g_table->philos[philo].last_meal = time;
-		ft_msg(time, philo, " is eating\n");
-		usleep(g_table->time_to_eat * 1000);
+		ft_msg(time, philo, "\e[32m\tis eating\n\e[0m");
+		ft_usleep (time, g_table->time_to_eat);
+		//usleep(g_table->time_to_eat * 1000);
+		ft_release_fork(philo);
+		time = ft_gettime();
 		g_table->philos[philo].total_eats ++;
-		time = ft_gettime();
-		ft_msg(time, philo, " is sleeping\n");
-		sem_post(g_table->forks);
-		sem_post(g_table->forks);
-		usleep(g_table->time_to_sleep * 1000);
-		time = ft_gettime();
-		ft_msg(time, philo, " is thinking\n");
+		ft_msg(time, philo, "\e[1;34m\tis spleeping\n\e[0m");
+		ft_usleep(time, g_table->time_to_sleep);
+		ft_msg(ft_gettime(), philo, " \e[34m\tis thinking\n\e[0m");
 	}
 	return (NULL);
 }
@@ -74,7 +61,7 @@ void	ft_isfull(unsigned long long time)
 	}
 	if (!flag)
 	{
-		ft_msg(time, 0, " All philosopers have eaten\n");
+		ft_msg(time, 0, "\e[0;35m\tLimit of meals reached\n\e[0m");
 		g_table->state = 1;
 		ft_exit_ok();
 	}
@@ -97,7 +84,7 @@ void	*ft_control(void *arg)
 			time = ft_gettime();
 			if ((time - g_table->philos[i].last_meal) > g_table->time_to_die)
 			{
-				ft_msg(time, i, " has died\n");
+				ft_msg(time, i, "\e[31m\thas died\n\e[0m");
 				g_table->state = 1;
 				ft_exit_ok();
 			}
@@ -111,11 +98,32 @@ void	*ft_control(void *arg)
 
 int	main(int argc, char **args)
 {
+	int	i;
+	unsigned long long	time;
+	
 	g_table = malloc (sizeof(t_table));
 	if (!ft_parse(argc, args))
 		return (0);
 	while (1)
 	{
+		i = 1;
+		sem_wait(g_table->control);
+		while (i <= g_table->nb_of_philosophers)
+		{
+			time = ft_gettime();
+			if ((time - g_table->philos[i].last_meal) > g_table->time_to_die)
+			{
+				ft_msg(time, i, "\e[31m\thas died\n\e[0m");
+				g_table->state = 1;
+				printf( " time: %llu last meal: %llu  tiem to die: %llu\n", time, g_table->philos[i].last_meal, g_table->time_to_die);
+				ft_exit_ok();
+			}
+			i++;
+		}
+		time = ft_gettime();
+		if (argc == 6)
+			ft_isfull(time);
+		sem_post(g_table->control);
 	}
 	return (0);
 }

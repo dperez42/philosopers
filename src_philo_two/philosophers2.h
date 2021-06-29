@@ -33,7 +33,8 @@ typedef struct s_table
 	sem_t				*forks;
 	sem_t				*write;
 	sem_t				*lock;
-	pthread_t			controller;
+	sem_t				*time;
+	sem_t				*control;
 }			t_table;
 
 t_table					*g_table;
@@ -42,7 +43,6 @@ int						ft_exit_error(void);
 int						ft_exit_ok(void);
 unsigned long long		ft_gettime_mill(void);
 unsigned long long		ft_gettime(void);
-void					ft_usleep(int length);
 void					ft_msg(unsigned long long time, int act, char *str);
 int						ft_strlen(char *str);
 int						ft_parse(int argc, char **args);
@@ -50,4 +50,6 @@ void					init_phylos(void);
 void					*ft_control(void *arg);
 void					*ft_routine(void *arg);
 void					ft_take_fork(int philo);
+void					ft_release_fork(int philo);
+void					ft_usleep(unsigned long long time, unsigned long long delay);
 #endif

@@ -5,35 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: daniel <daniel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/17 14:21:36 by dperez-z          #+#    #+#             */
-/*   Updated: 2021/06/21 00:11:46 by daniel           ###   ########.fr       */
+/*   Created: 2021/06/18 20:45:51 by daniel            #+#    #+#             */
+/*   Updated: 2021/06/20 19:33:50 by daniel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers2.h"
 
 //action of taking forks
 void	ft_take_fork(int philo)
 {
 	unsigned long long	time;
 
-	pthread_mutex_lock(&g_table->fork);
-	pthread_mutex_lock(&g_table->forks[g_table->philos[philo].fork_left]);
-	pthread_mutex_lock(&g_table->forks[g_table->philos[philo].fork_right]);
+	sem_wait(g_table->lock);
+	sem_wait(g_table->forks);
 	time = ft_gettime();
 	ft_msg(time, philo, "\e[1;32m\thas taken a fork\n\e[0m");
-	//printf(" cogido el fork %i \n",g_table->philos[philo].fork_right);
+	sem_wait(g_table->forks);
+	time = ft_gettime();
 	ft_msg(time, philo, "\e[1;32m\thas taken a fork\n\e[0m");
-	//printf(" cogido el fork %i \n",g_table->philos[philo].fork_left);
-	pthread_mutex_unlock(&g_table->fork);
+	sem_post(g_table->lock);
 	return ;
 }
 
 // Release forks;
 void	ft_release_fork(int philo)
 {
-	pthread_mutex_unlock(
-		&g_table->forks[g_table->philos[philo].fork_right]);
-	pthread_mutex_unlock(&g_table->forks[g_table->philos[philo].fork_left]);
+	unsigned long long	time;
+	
+	sem_post(g_table->forks);
+	sem_post(g_table->forks);
+	//time = ft_gettime();
+	//ft_msg(time, philo, " has release a fork\n");
+	//time = ft_gettime();
+	//ft_msg(time, philo, " has release a fork\n");
 	return ;
 }
